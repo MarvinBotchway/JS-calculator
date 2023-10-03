@@ -4,7 +4,7 @@ const keypad = document.getElementById("keypad");
 
 
 const validDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const validOperators = ["+", "-", "*", "/"];
+const validOperators = ["+", "-", "*", "/", "%"];
 const btnTextContents = [
     "AC", "+/-", "%", "/",
     "7", "8", "9", "*",
@@ -63,4 +63,5 @@ function operate() {
     if (operator == "-") return (Number(num1Str) - Number(num2Str));
     if (operator == "*") return (Number(num1Str) * Number(num2Str));
     if (operator == "/") return (Number(num1Str) / Number(num2Str));
+    if (operator == "%") return (Number(num1Str) % Number(num2Str));
 }
