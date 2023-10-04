@@ -25,14 +25,6 @@
     text-align: end;
 }
 
-#input-text {
-    display: block;
-    width: 100%;
-    border: none;
-    outline: none;
-    text-align: end;
-}
-
 #keypad {
     display: flex;
     flex-wrap: wrap;
