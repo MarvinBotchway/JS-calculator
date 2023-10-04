@@ -16,9 +16,12 @@ let num1Str = "0";
 let num2Str = "0";
 let operatorIndex = 0;
 let operator = "";
+let keysEntered = "";
 let solution;
 
 inputText.addEventListener("input", getInput);
+
+document.addEventListener("keyup", getKeys)
 
 for (let i = 0; i < btnTextContents.length; i++) {
     const keypadItem = document.createElement("button");
@@ -42,6 +45,8 @@ for (let i = 0; i < btnTextContents.length; i++) {
 
 function getInput(e) {
     let valueEntered = e.target.value;
+
+    console.log(valueEntered);
     if (validOperators.includes(valueEntered[(valueEntered.length - 1)])) {
         operatorIndex = valueEntered.length - 1;
         operator = valueEntered[(valueEntered.length - 1)];
@@ -55,6 +60,28 @@ function getInput(e) {
         solutionText.textContent = solution = operate();
         
         inputText.value = valueEntered.substring(0, (valueEntered.length - 1));
+    }
+}
+
+function getKeys(e) {
+    if (validDigits.includes(Number(e.key))) {
+        keysEntered += e.key;
+        inputText.value = keysEntered;
+    }
+    else if (validOperators.includes(e.key)) {
+        keysEntered += e.key;
+        inputText.value = keysEntered;
+   
+        operatorIndex = keysEntered.length - 1;
+        operator = keysEntered[operatorIndex];
+        
+        if (solution != undefined) num1Str = solution;
+        else num1Str = keysEntered.substring(0, (keysEntered.length - 1));
+    }
+    else if (e.key == "=") {
+        num2Str = keysEntered.substring((operatorIndex + 1), (keysEntered.length));
+        solutionText.textContent = solution = operate();
+        keysEntered = keysEntered.substring(0, (keysEntered.length));
     }
 }
 
