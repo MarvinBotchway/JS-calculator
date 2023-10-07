@@ -14,10 +14,12 @@ const btnTextContents = [
 
 let num1Str = "0";
 let num2Str = "0";
-let operatorIndex = 0;
+let operatorIndex;
+let oldOperatorIndex;
 let operator = "";
 let keysEntered = "";
 let solution;
+let equalUsed = false;
 
 document.addEventListener("keyup", getKeys)
 
@@ -45,22 +47,44 @@ function getKeys(e) {
     if (validDigits.includes(Number(e.key))) {
         keysEntered += e.key;
         typingArea.textContent = keysEntered;
+        oldOperatorIndex = undefined;
     }
-    else if (validOperators.includes(e.key)) {
+    else if (validOperators.includes(e.key) || e.key == "=") {
         keysEntered += e.key;
         typingArea.textContent = keysEntered;
-   
+
+        if (operator != "") oldOperatorIndex = operatorIndex;
         operatorIndex = keysEntered.length - 1;
-        operator = keysEntered[operatorIndex];
+        operator = oldOperatorIndex ? keysEntered[oldOperatorIndex] : keysEntered[operatorIndex];
         
-        if (solution != undefined) num1Str = solution;
-        else num1Str = keysEntered.substring(0, (keysEntered.length - 1));
+        if (solution && oldOperatorIndex) { 
+            num1Str = solution;
+            num2Str = keysEntered.substring((oldOperatorIndex + 1), (keysEntered.length - 1));
+        }
+        else {
+            num1Str = keysEntered.substring(0, (keysEntered.length - 1));
+            }
+                    
+            
+        if (!equalUsed) {
+            solution = solutionText.textContent = operate();
+            equalUsed = false;
+        }
+        if (e.key == "=") {
+            equalUsed = true;
+            keysEntered = keysEntered.substring(0, (keysEntered.length - 1));
+            operator = "";
+            operatorIndex = oldOperatorIndex;
+        }
+
+        else if (validOperators.includes(e.key)) equalUsed = false;
+            
     }
-    else if (e.key == "=") {
-        num2Str = keysEntered.substring((operatorIndex + 1), (keysEntered.length));
-        solutionText.textContent = solution = operate();
-        keysEntered = keysEntered.substring(0, (keysEntered.length));
-    }
+    // if (e.key == "=") {
+    //     num2Str = keysEntered.substring((operatorIndex + 1), (keysEntered.length));
+    //     solution = solutionText.textContent = operate();
+    //     keysEntered = keysEntered.substring(0, (keysEntered.length));
+    // }
 }
 
 function operate() {
