@@ -47,6 +47,10 @@ function getKeys(e) {
         oldOperatorIndex = undefined;
     }
     else if (validOperators.includes(e.key) || e.key == "=") {
+        if (validOperators.includes(keysEntered[keysEntered.length - 1])) {
+            return;
+        }
+        
         keysEntered += e.key;
         if (e.key == "=") {
             typingArea.textContent = keysEntered.substring(0, (keysEntered.length - 1));
