@@ -25,20 +25,17 @@ document.addEventListener("keyup", getKeys)
 
 for (let i = 0; i < btnTextContents.length; i++) {
     const keypadItem = document.createElement("button");
-    
     keypadItem.classList.add("btn");
-    if (btnTextContents[i] == "=") {
-        keypadItem.classList.add("equal");
-    }
-    else if (btnTextContents[i] == "Del" ||
-    btnTextContents[i] == "AC") {
+    
+    if (btnTextContents[i] == "=") keypadItem.classList.add("equal");
+    else if (btnTextContents[i] == "Del" || btnTextContents[i] == "AC") {
         keypadItem.classList.add("del");
     }
-    else if (!parseInt(btnTextContents[i]) &&
-    btnTextContents[i] != "0" &&
+    else if (!parseInt(btnTextContents[i]) && btnTextContents[i] != "0" &&
     btnTextContents[i] != ".") {
         keypadItem.classList.add("notNum");
     }
+
     keypadItem.textContent = btnTextContents[i];
     keypad.appendChild(keypadItem).a;
 }
@@ -53,7 +50,7 @@ function getKeys(e) {
         keysEntered += e.key;
         if (e.key == "=") {
             typingArea.textContent = keysEntered.substring(0, (keysEntered.length - 1));
-        }else typingArea.textContent = keysEntered;
+        } else typingArea.textContent = keysEntered;
 
         if (operator != "") oldOperatorIndex = operatorIndex;
         operatorIndex = keysEntered.length - 1;
@@ -75,7 +72,6 @@ function getKeys(e) {
             operator = "";
             operatorIndex = oldOperatorIndex;
         } else if (validOperators.includes(e.key)) equalUsed = false;
-            
     }
 }
 
