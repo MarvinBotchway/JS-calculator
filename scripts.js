@@ -19,6 +19,7 @@ let oldOperatorIndex;
 let operator = "";
 let keysEntered = "";
 let solution;
+let positionsAndSolutions = [];
 let equalUsed = false;
 
 document.addEventListener("keyup", getKeys)
@@ -67,6 +68,8 @@ function getKeys(e) {
             
         if (!equalUsed) {
             solution = solutionText.textContent = operate();
+            let lastIndexOfExpression = operatorIndex - 1;
+            positionsAndSolutions.push({lastIndexOfExpression, solution});
             equalUsed = false;
         }
 
@@ -77,7 +80,34 @@ function getKeys(e) {
             operatorIndex = oldOperatorIndex;
         } else if (validOperators.includes(e.key)) equalUsed = false;
     }
+    if (e.key === "Backspace") {
+        keysEntered = keysEntered.slice(0, -1);
+        typingArea.textContent = keysEntered;
+        
+        if (positionsAndSolutions[positionsAndSolutions.length - 1].solution &&
+        ((keysEntered.length - 1) < positionsAndSolutions[positionsAndSolutions.length - 1].lastIndexOfExpression)) {
+            positionsAndSolutions.pop();
+            if (positionsAndSolutions.length > 0) {
+                solution = positionsAndSolutions[positionsAndSolutions.length -1].solution;
+                solutionText.textContent = solution;
+                operatorIndex = (positionsAndSolutions[positionsAndSolutions.length -1].lastIndexOfExpression) + 1;
+                num1Str = solution;
+            }
+            else {
+                solutionText.textContent = "0";
+                solution = undefined;
+                operatorIndex = undefined;
+                oldOperatorIndex = undefined;
+                operator = "";
+                equalUsed = false;
+                num1Str = num2Str = "0";
+                keysEntered = "";
+            }
+
+        } 
+    }
 }
+
 
 function operate() {
     if (operator == "+") return (Number(num1Str) + Number(num2Str));
