@@ -84,27 +84,44 @@ function getKeys(e) {
         keysEntered = keysEntered.slice(0, -1);
         typingArea.textContent = keysEntered;
         
-        if (positionsAndSolutions[positionsAndSolutions.length - 1].solution &&
-        ((keysEntered.length - 1) < positionsAndSolutions[positionsAndSolutions.length - 1].lastIndexOfExpression)) {
-            positionsAndSolutions.pop();
-            if (positionsAndSolutions.length > 0) {
-                solution = positionsAndSolutions[positionsAndSolutions.length -1].solution;
-                solutionText.textContent = solution;
-                operatorIndex = (positionsAndSolutions[positionsAndSolutions.length -1].lastIndexOfExpression) + 1;
-                num1Str = solution;
+        if (keysEntered.length < 1) {
+            solution = solutionText.textContent = "0";
+            num1Str = num2Str = "0";
+            operatorIndex = oldOperatorIndex = undefined;
+            keysEntered = "";
+            operator = "";
+            equalUsed = false;
+            return;
+        }
+        
+        for (let i = 0; i < keysEntered.length; i++) {
+            if (validOperators.includes(keysEntered[i])){
+                oldOperatorIndex = operatorIndex = i;
             }
-            else {
-                solutionText.textContent = "0";
-                solution = undefined;
-                operatorIndex = undefined;
-                oldOperatorIndex = undefined;
-                operator = "";
-                equalUsed = false;
-                num1Str = num2Str = "0";
-                keysEntered = "";
+        }
+        operator = keysEntered[oldOperatorIndex];
+        
+        if ((keysEntered.length - 1) <=
+        positionsAndSolutions[positionsAndSolutions.length - 1].lastIndexOfExpression) {
+            if (positionsAndSolutions.length > 1) {
+                positionsAndSolutions.pop();
             }
+        }
+        solution = positionsAndSolutions[positionsAndSolutions.length -1].solution;
 
-        } 
+        if (keysEntered.length - 1 > oldOperatorIndex) {
+            num1Str = solution;
+            num2Str = keysEntered.substring((oldOperatorIndex + 1), keysEntered.length);
+            solution = operate();
+        }
+        if (!operator) {
+            solution = solutionText.textContent = keysEntered;
+            num1Str = solution;
+        }
+        solutionText.textContent = solution;
+
+        
+
     }
 }
 
