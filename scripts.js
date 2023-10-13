@@ -119,9 +119,7 @@ function getKeys(e) {
             num1Str = solution;
         }
         solutionText.textContent = solution;
-
-        
-
+        equalUsed = false;
     }
 }
 
