@@ -101,19 +101,19 @@ function getKeys(e) {
         }
         operator = keysEntered[oldOperatorIndex];
         
-        if ((keysEntered.length - 1) <=
-        positionsAndSolutions[positionsAndSolutions.length - 1].lastIndexOfExpression) {
+        if (validOperators.includes(keysEntered[keysEntered.length - 1])) {
             if (positionsAndSolutions.length > 1) {
                 positionsAndSolutions.pop();
             }
         }
-        solution = positionsAndSolutions[positionsAndSolutions.length -1].solution;
+        solution = positionsAndSolutions[positionsAndSolutions.length - 1].solution;
 
-        if (keysEntered.length - 1 > oldOperatorIndex) {
-            num1Str = solution;
+        if (validDigits.includes(Number(keysEntered[keysEntered.length - 1]))) {
+            num1Str = positionsAndSolutions[positionsAndSolutions.length - 2].solution;
             num2Str = keysEntered.substring((oldOperatorIndex + 1), keysEntered.length);
             solution = operate();
-        }
+        } else num2Str = 0;
+
         if (!operator) {
             solution = solutionText.textContent = keysEntered;
             num1Str = solution;
