@@ -70,7 +70,38 @@ function getKeys(e) {
         operator = e.key;
         operatorIndex = (keysEntered.length - 1);
     }
-    
+    else if (e.key === "Backspace") {
+        let keyDeleted = keysEntered[keysEntered.length - 1];
+        keysEntered = keysEntered.slice(0, -1);
+        typingArea.textContent = keysEntered;
+
+        getLastOperatorIndex();
+        operator = keysEntered[operatorIndex];
+
+        
+
+        if (operatorIndex < (keysEntered.length - 1)) {
+            num2Str = keysEntered.slice((operatorIndex + 1), keysEntered.length);
+            if (validDigits.includes(Number(keyDeleted))) { 
+                solutions.pop();
+                num1Str = num1Str;
+            } else num1Str = solutions[(solutions.length - num2Str.length) - 1];
+            
+            solution = solutions[solutions.length - 1];
+        }
+        if (operatorIndex == (keysEntered.length - 1)) {
+            num2Str = "";
+            solutions.pop();
+            num1Str = solutions[solutions.length - 1];
+            solution = solutions[solutions.length - 1];
+        }
+        
+        if (!operator) {
+            solution = num1Str = keysEntered;
+            operatorIndex = null;
+        }
+        solutionText.textContent = solution;
+    }
 }
 
 function getLastOperatorIndex() {
