@@ -12,14 +12,16 @@ const btnTextContents = [
     "1", "2", "3", "+",
     ".", "0", "Del", "="];
 
-let num1Str = "0";
-let num2Str = "0";
+let num1Str = "";
+let num2Str = "";
+let solution = "";
+
 let operatorIndex;
 let oldOperatorIndex;
 let operator = "";
+
 let keysEntered = "";
-let solution;
-let positionsAndSolutions = [];
+let solutions = [];
 let equalUsed = false;
 
 document.addEventListener("keyup", getKeys)
@@ -41,88 +43,43 @@ for (let i = 0; i < btnTextContents.length; i++) {
     keypad.appendChild(keypadItem).a;
 }
 
+solutionText.textContent = "";
+
 function getKeys(e) {
+
     if (validDigits.includes(Number(e.key))) {
         keysEntered += e.key;
         typingArea.textContent = keysEntered;
-        oldOperatorIndex = undefined;
-    }
-    else if (validOperators.includes(e.key) || e.key == "=") {
-        if (validOperators.includes(keysEntered[keysEntered.length - 1])) {
-            return;
-        }
-        
-        keysEntered += e.key;
-        if (e.key == "=") {
-            typingArea.textContent = keysEntered.substring(0, (keysEntered.length - 1));
-        } else typingArea.textContent = keysEntered;
-
-        if (operator != "") oldOperatorIndex = operatorIndex;
-        operatorIndex = keysEntered.length - 1;
-        operator = oldOperatorIndex ? keysEntered[oldOperatorIndex] : keysEntered[operatorIndex];
-        
-        if (solution && oldOperatorIndex) { 
-            num1Str = solution;
-            num2Str = keysEntered.substring((oldOperatorIndex + 1), (keysEntered.length - 1));
-        } else num1Str = keysEntered.substring(0, (keysEntered.length - 1));
-            
-        if (!equalUsed) {
+        if (!operator){
+            num1Str += e.key;
+            solution = solutionText.textContent += e.key;
+        } else  if (operator){
+            num2Str += e.key;
             solution = solutionText.textContent = operate();
-            let lastIndexOfExpression = operatorIndex - 1;
-            positionsAndSolutions.push({lastIndexOfExpression, solution});
-            equalUsed = false;
         }
-
-        if (e.key == "=") {
-            equalUsed = true;
-            keysEntered = keysEntered.substring(0, (keysEntered.length - 1));
-            operator = "";
-            operatorIndex = oldOperatorIndex;
-        } else if (validOperators.includes(e.key)) equalUsed = false;
+        solutions.push(Number(solution));
     }
-    if (e.key === "Backspace") {
-        keysEntered = keysEntered.slice(0, -1);
+    else if (validOperators.includes(e.key)) {
+        keysEntered += e.key;
         typingArea.textContent = keysEntered;
         
-        if (keysEntered.length < 1) {
-            solution = solutionText.textContent = "0";
-            num1Str = num2Str = "0";
-            operatorIndex = oldOperatorIndex = undefined;
-            keysEntered = "";
-            operator = "";
-            equalUsed = false;
-            return;
-        }
-        
-        for (let i = 0; i < keysEntered.length; i++) {
-            if (validOperators.includes(keysEntered[i])){
-                oldOperatorIndex = operatorIndex = i;
-            }
-        }
-        operator = keysEntered[oldOperatorIndex];
-        
-        if (validOperators.includes(keysEntered[keysEntered.length - 1])) {
-            if (positionsAndSolutions.length > 1) {
-                positionsAndSolutions.pop();
-            }
-        }
-        solution = positionsAndSolutions[positionsAndSolutions.length - 1].solution;
-
-        if (validDigits.includes(Number(keysEntered[keysEntered.length - 1]))) {
-            num1Str = positionsAndSolutions[positionsAndSolutions.length - 2].solution;
-            num2Str = keysEntered.substring((oldOperatorIndex + 1), keysEntered.length);
-            solution = operate();
-        } else num2Str = 0;
-
-        if (!operator) {
-            solution = solutionText.textContent = keysEntered;
+        if (operator) {
             num1Str = solution;
+            num2Str = "";
         }
-        solutionText.textContent = solution;
-        equalUsed = false;
+        operator = e.key;
+        operatorIndex = (keysEntered.length - 1);
     }
+    
 }
 
+function getLastOperatorIndex() {
+    for (let i = 0; i < keysEntered.length; i++) {
+        if (validOperators.includes(keysEntered[i])) {
+            operatorIndex = i;
+        }
+    }
+}
 
 function operate() {
     if (operator == "+") return (Number(num1Str) + Number(num2Str));
