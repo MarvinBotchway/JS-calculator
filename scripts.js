@@ -6,7 +6,7 @@ const keypad = document.getElementById("keypad");
 const validDigits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const validOperators = ["+", "-", "*", "/", "%"];
 const btnTextContents = [
-    "AC", "+/-", "%", "/",
+    "AC", "%", "/",
     "7", "8", "9", "*",
     "4", "5", "6", "-",
     "1", "2", "3", "+",
@@ -17,12 +17,10 @@ let num2Str = "";
 let solution = "";
 
 let operatorIndex;
-let oldOperatorIndex;
 let operator = "";
 
 let keysEntered = "";
 let solutions = [];
-let equalUsed = false;
 
 document.addEventListener("keyup", getKeys)
 
@@ -33,6 +31,7 @@ for (let i = 0; i < btnTextContents.length; i++) {
     if (btnTextContents[i] == "=") keypadItem.classList.add("equal");
     else if (btnTextContents[i] == "Del" || btnTextContents[i] == "AC") {
         keypadItem.classList.add("del");
+        if (btnTextContents[i] == "AC") keypadItem.classList.add("ac");
     }
     else if (!parseInt(btnTextContents[i]) && btnTextContents[i] != "0" &&
     btnTextContents[i] != ".") {
