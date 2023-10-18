@@ -102,6 +102,14 @@ function getKeys(e) {
         }
         solutionText.textContent = solution;
     }
+    else if (e.key === "=") {
+        keysEntered = num1Str = solution;
+        num2Str = "";
+        operator = "";
+        operatorIndex = null;
+
+        typingArea.textContent = "";
+    }
 }
 
 function getLastOperatorIndex() {
