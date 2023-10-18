@@ -41,12 +41,12 @@ for (let i = 0; i < btnTextContents.length; i++) {
 
     keypadItem.textContent = btnTextContents[i];
     keypad.appendChild(keypadItem).a;
+    if (keysEntered == "") typingArea.textContent = "0";
 }
 
 solutionText.textContent = "";
 
 function getKeys(e) {
-
     if (validDigits.includes(Number(e.key))) {
         keysEntered += e.key;
         typingArea.textContent = keysEntered;
@@ -103,13 +103,14 @@ function getKeys(e) {
         solutionText.textContent = solution;
     }
     else if (e.key === "=") {
-        keysEntered = num1Str = solution;
+        keysEntered = num1Str = solution.toString();
         num2Str = "";
         operator = "";
         operatorIndex = null;
 
         typingArea.textContent = "";
     }
+    if (keysEntered == "") typingArea.textContent = "0";
 }
 
 function getLastOperatorIndex() {
