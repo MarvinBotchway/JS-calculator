@@ -109,6 +109,17 @@ function calculate(input) {
 
         typingArea.textContent = "";
     }
+    else if (input === "AC" || input === "Delete") {
+        keysEntered = "";
+        num1Str = "";
+        num2Str = "";
+        operator = "";
+        operatorIndex = null;
+        typingArea.textContent = "";
+        solutionText.textContent = "";
+        solution = "";
+        solutions = [];
+    }
     if (keysEntered == "") typingArea.textContent = "0";
 }
 
