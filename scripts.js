@@ -22,7 +22,7 @@ let operator = "";
 let keysEntered = "";
 let solutions = [];
 
-document.addEventListener("keyup", getKeys)
+document.addEventListener("keyup", (e) => calculate(e.key));
 
 for (let i = 0; i < btnTextContents.length; i++) {
     const keypadItem = document.createElement("button");
@@ -40,44 +40,45 @@ for (let i = 0; i < btnTextContents.length; i++) {
 
     keypadItem.textContent = btnTextContents[i];
     keypad.appendChild(keypadItem).a;
+    
+    keypadItem.addEventListener("click", (e) => calculate(e.target.innerText));
+    
     if (keysEntered == "") typingArea.textContent = "0";
 }
 
 solutionText.textContent = "";
 
-function getKeys(e) {
-    if (validDigits.includes(Number(e.key))) {
-        keysEntered += e.key;
+function calculate(input) {
+    if (validDigits.includes(Number(input))) {
+        keysEntered += input;
         typingArea.textContent = keysEntered;
         if (!operator){
-            num1Str += e.key;
-            solution = solutionText.textContent += e.key;
+            num1Str += input;
+            solution = solutionText.textContent += input;
         } else  if (operator){
-            num2Str += e.key;
+            num2Str += input;
             solution = solutionText.textContent = operate();
         }
         solutions.push(Number(solution));
     }
-    else if (validOperators.includes(e.key)) {
-        keysEntered += e.key;
+    else if (validOperators.includes(input)) {
+        keysEntered += input;
         typingArea.textContent = keysEntered;
         
         if (operator) {
             num1Str = solution;
             num2Str = "";
         }
-        operator = e.key;
+        operator = input;
         operatorIndex = (keysEntered.length - 1);
     }
-    else if (e.key === "Backspace") {
+    else if (input === "Backspace" || input == "Del") {
         let keyDeleted = keysEntered[keysEntered.length - 1];
         keysEntered = keysEntered.slice(0, -1);
         typingArea.textContent = keysEntered;
 
         getLastOperatorIndex();
         operator = keysEntered[operatorIndex];
-
-        
 
         if (operatorIndex < (keysEntered.length - 1)) {
             num2Str = keysEntered.slice((operatorIndex + 1), keysEntered.length);
@@ -94,14 +95,13 @@ function getKeys(e) {
             num1Str = solutions[solutions.length - 1];
             solution = solutions[solutions.length - 1];
         }
-        
         if (!operator) {
             solution = num1Str = keysEntered;
             operatorIndex = null;
         }
         solutionText.textContent = solution;
     }
-    else if (e.key === "=") {
+    else if (input === "=") {
         keysEntered = num1Str = solution.toString();
         num2Str = "";
         operator = "";
