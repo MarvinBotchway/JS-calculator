@@ -50,14 +50,21 @@ solutionText.textContent = "";
 
 function calculate(input) {
     if (validDigits.includes(Number(input)) || input === ".") {
-        keysEntered += input;
-        typingArea.textContent = keysEntered;
+        
         if (!operator){
-            num1Str += input;
-            solution = solutionText.textContent += input;
+            if (!(input === "." && num1Str.includes("."))) {
+                keysEntered += input;
+                typingArea.textContent = keysEntered;
+                num1Str += input;
+                solution = solutionText.textContent += input;
+            }
         } else  if (operator){
-            num2Str += input;
-            solution = solutionText.textContent = operate();
+            if (!(input === "." && num2Str.includes("."))) {
+                keysEntered += input;
+                typingArea.textContent = keysEntered;        
+                num2Str += input;
+                solution = solutionText.textContent = operate();
+            }
         }
         solutions.push(Number(solution));
     }
