@@ -49,7 +49,7 @@ for (let i = 0; i < btnTextContents.length; i++) {
 solutionText.textContent = "";
 
 function calculate(input) {
-    if (validDigits.includes(Number(input))) {
+    if (validDigits.includes(Number(input)) || input === ".") {
         keysEntered += input;
         typingArea.textContent = keysEntered;
         if (!operator){
