@@ -49,37 +49,47 @@ for (let i = 0; i < btnTextContents.length; i++) {
 solutionText.textContent = "";
 
 function calculate(input) {
-    if (validDigits.includes(Number(input)) || input === ".") {
-        
-        if (!operator){
+   if (validDigits.includes(Number(input)) || input === ".") {
+        if (keysEntered.length > 21) {
+            window.alert("You can not enter anymore digits!");
+
+        } else if (!operator){
             if (!(input === "." && num1Str.includes("."))) {
                 keysEntered += input;
                 typingArea.textContent = keysEntered;
                 num1Str += input;
                 solution = solutionText.textContent += input;
             }
-        } else  if (operator){
+
+        } else if (operator){
             if (!(input === "." && num2Str.includes("."))) {
                 keysEntered += input;
                 typingArea.textContent = keysEntered;        
                 num2Str += input;
                 solution = solutionText.textContent = operate();
+                if (solution.length > 20) {
+                    solution = Number(solution).toFixed(20);
+                    solutionText.textContent = solution;
+                }
             }
         }
         solutions.push(Number(solution));
-    }
-    else if (validOperators.includes(input)) {
-        keysEntered += input;
-        typingArea.textContent = keysEntered;
-        
-        if (operator) {
-            num1Str = solution;
-            num2Str = "";
+
+    } else if (validOperators.includes(input)) {
+        if (keysEntered.length > 21) {
+            window.alert("You can not enter anymore digits!");
+        } else {
+            keysEntered += input;
+            typingArea.textContent = keysEntered;
+            
+            if (operator) {
+                num1Str = solution;
+                num2Str = "";
+            }
+            operator = input;
+            operatorIndex = (keysEntered.length - 1);
         }
-        operator = input;
-        operatorIndex = (keysEntered.length - 1);
-    }
-    else if (input === "Backspace" || input == "Del") {
+    } else if (input === "Backspace" || input == "Del") {
         let keyDeleted = keysEntered[keysEntered.length - 1];
         keysEntered = keysEntered.slice(0, -1);
         typingArea.textContent = keysEntered;
@@ -107,16 +117,16 @@ function calculate(input) {
             operatorIndex = null;
         }
         solutionText.textContent = solution;
-    }
-    else if (input === "=") {
+    
+    } else if (input === "=") {
         keysEntered = num1Str = solution.toString();
         num2Str = "";
         operator = "";
         operatorIndex = null;
 
         typingArea.textContent = "";
-    }
-    else if (input === "AC" || input === "Delete") {
+    
+    } else if (input === "AC" || input === "Delete") {
         keysEntered = "";
         num1Str = "";
         num2Str = "";
