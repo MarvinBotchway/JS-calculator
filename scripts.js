@@ -66,11 +66,12 @@ function calculate(input) {
                 keysEntered += input;
                 typingArea.textContent = keysEntered;        
                 num2Str += input;
-                solution = solutionText.textContent = operate();
-                if (solution.length > 20) {
-                    solution = Number(solution).toFixed(20);
-                    solutionText.textContent = solution;
+                solution = operate();
+                if (solution.toString().length > 4 && solution.toString().includes(".")) {
+                    solution = solution.toFixed(2);
                 }
+
+                solutionText.textContent = solution;
             }
         }
         solutions.push(Number(solution));
