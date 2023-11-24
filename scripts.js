@@ -22,7 +22,7 @@ let operator = "";
 let keysEntered = "";
 let solutions = [];
 
-document.addEventListener("keyup", (e) => calculate(e.key));
+document.addEventListener("keydown", (e) => calculate(e.key));
 
 for (let i = 0; i < btnTextContents.length; i++) {
     const keypadItem = document.createElement("button");
